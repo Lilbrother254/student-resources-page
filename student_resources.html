@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Resources - Dedan Kimathi University of Technology</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+
+        .main-container {
+            background-color: #fff;
+            margin: 20px auto;
+            max-width: 1400px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background-color: #004d00;
+            color: white;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header img {
+            height: 80px;
+            margin-right: 25px;
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 2.2em;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .header-title p {
+            margin: 5px 0 0;
+            font-size: 1.6em;
+            color: red;
+            font-family: 'Caveat', cursive;
+        }
+
+        .nav {
+            background-color: #006600;
+            padding: 10px 25px; /* Adjusted padding */
+            display: flex;
+            gap: 10px; /* Adjusted gap */
+            justify-content: center; /* Center nav items */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1em;
+            padding: 10px 20px; /* Padding for button-like appearance */
+            border-radius: 25px; /* Rounded corners */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Subtle white overlay on hover */
+        }
+
+        .nav a.active {
+            background-color: white; /* White background for active tab */
+            color: #006600; /* Green text for active tab */
+        }
+
+        .breadcrumb {
+            background-color: #e6b800;
+            padding: 15px 25px;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 25px;
+        }
+
+        .content h2 {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .resource-card {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .resource-card .icon {
+            font-size: 1.8em;
+            margin-right: 20px;
+        }
+
+        .resource-card .text {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1em;
+        }
+
+        /* Card Colors */
+        .color-blue { background-color: #1a75ff; }
+        .color-green { background-color: #009933; }
+        .color-orange { background-color: #ff8c1a; }
+        .color-red { background-color: #cc3300; }
+        .color-teal { background-color: #008080; }
+        .color-yellow { background-color: #e6b800; }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.0); /* Removed dark background */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 700px;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .close-btn {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: calc(100% - 24px);
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1em;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 15px;
+            background-color: #009933;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 700;
+            transition: background-color 0.2s ease;
+        }
+
+        .form-group button:hover {
+            background-color: #007a29;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header img {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <img src="C:\Users\h\Downloads\hqdefault-removebg-preview.png" alt="Dedan Kimathi University of Technology Logo">
+            <div class="header-title">
+                <h1>Dedan Kimathi University of Technology</h1>
+                <p>Better Life Through Technology</p>
+            </div>
+        </div>
+        <div class="nav">
+            <a href="#" class="nav-item active">Dashboard</a>
+            <a href="#" class="nav-item">Finance</a>
+            <a href="#" class="nav-item">Academics</a>
+            <a href="#" class="nav-item">Resources</a>
+            <a href="#" class="nav-item">Notice Board</a>
+            <a href="#" class="nav-item">Logout</a>
+        </div>
+        <div class="breadcrumb">
+            Home / student resources
+        </div>
+        <div class="content">
+            <h2>Student Resources</h2>
+            <div class="resources-grid">
+                <!-- Resources will be dynamically loaded here -->
+            </div>
+        </div>
+        <div class="footer">
+            <span>&copy; DeKUT 2025</span>
+            <span>SDC Directorate</span>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="resourceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const resources = [
+            {
+                title: 'Virtual Orientation Tour',
+                description: 'A guided tour of the campus for our new students.',
+                category: 'new-students',
+                icon: 'fa-solid fa-vr-cardboard',
+                color: 'color-blue',
+                buttonText: 'Start Tour',
+                modalContent: `
+                    <h2>Virtual Orientation Tour</h2>
+                    <p>Welcome to our virtual orientation! Explore the campus, facilities, and get to know your new home. The tour is available 24/7.</p>
+                    <iframe width="100%" height="315" src="https://www.youtube.com/embed/dz8U8d4ZfkI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                `
+            },
+            {
+                title: 'Bursary Application',
+                description: 'Apply for financial assistance through the university bursary.',
+                category: 'financial',
+                icon: 'fa-solid fa-hand-holding-dollar',
+                color: 'color-blue',
+                buttonText: 'Apply Now',
+                modalContent: `
+                    <h2>Bursary Application Form</h2>
+                    <form>
+                        <div class="form-group">
+                            <label for="bursary-name">Full Name</label>
+                            <input type="text" id="bursary-name" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bursary-reg-no">Registration Number</label>
+                            <input type="text" id="bursary-reg-no" placeholder="C026-01-0001/2025" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bursary-reason">Reason for Application</label>
+                            <textarea id="bursary-reason" rows="4" placeholder="Briefly explain your need for financial assistance." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit">Submit Application</button>
+                        </div>
+                    </form>
+                `
+            },
+            {
+                title: 'Student Letters',
+                description: 'Request for official student letters for various purposes.',
+                category: 'administrative',
+                icon: 'fa-solid fa-file-signature',
+                color: 'color-green',
+                buttonText: 'Request Letter',
+                modalContent: `
+                    <h2>Request a Student Letter</h2>
+                    <form>
+                        <div class="form-group">
+                            <label for="letter-type">Type of Letter</label>
+                            <select id="letter-type" required>
+                                <option value="">Select Type</option>
+                                <option value="recommendation">Recommendation Letter</option>
+                                <option value="confirmation">Confirmation of Studentship</option>
+                                <option value="english-medium">English as Medium of Instruction</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="letter-recipient">Recipient (e.g., Bank, Embassy)</label>
+                            <input type="text" id="letter-recipient" placeholder="The Manager, Equity Bank" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit">Request Letter</button>
+                        </div>
+                    </form>
+                `
+            },
+            {
+                title: 'Counselling Service',
+                description: 'Access to professional counselling services for all students.',
+                category: 'new-students',
+                icon: 'fa-solid fa-head-side-virus',
+                color: 'color-orange',
+                buttonText: 'Book Session',
+                modalContent: `
+                    <h2>Counselling Services</h2>
+                    <p>Our counselling services are confidential and free of charge. Book a session with one of our professional counsellors today.</p>
+                    <form>
+                        <div class="form-group">
+                            <label for="counsel-date">Preferred Date</label>
+                            <input type="date" id="counsel-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="counsel-time">Preferred Time</label>
+                            <input type="time" id="counsel-time" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit">Book Session</button>
+                        </div>
+                    </form>
+                `
+            },
+            {
+                title: 'Contact Update',
+                description: 'Update your contact information to stay connected.',
+                category: 'administrative',
+                icon: 'fa-solid fa-address-book',
+                color: 'color-red',
+                buttonText: 'Update Info',
+                modalContent: `
+                    <h2>Update Your Contact Information</h2>
+                    <form>
+                        <div class="form-group">
+                            <label for="contact-phone">Phone Number</label>
+                            <input type="tel" id="contact-phone" placeholder="+254 712 345 678" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">Personal Email Address</label>
+                            <input type="email" id="contact-email" placeholder="personal.email@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit">Update Contacts</button>
+                        </div>
+                    </form>
+                `
+            },
+            {
+                title: 'Academic Leave Application',
+                description: 'Apply for a leave of absence from your studies.',
+                category: 'academic',
+                icon: 'fa-solid fa-plane-departure',
+                color: 'color-blue',
+                buttonText: 'Apply for Leave',
+                modalContent: `
+                    <h2>Academic Leave Application</h2>
+                    <form>
+                        <div class="form-group">
+                            <label for="leave-start">Start Date</label>
+                            <input type="date" id="leave-start" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="leave-end">End Date</label>
+                            <input type="date" id="leave-end" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="leave-reason">Reason for Leave</label>
+                            <textarea id="leave-reason" rows="4" placeholder="Please provide a detailed reason for your leave request." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit">Submit Application</button>
+                        </div>
+                    </form>
+                `
+            },
+            {
+                title: 'Student Identity Card Available',
+                description: 'Check the list of available student ID cards for collection.',
+                category: 'administrative',
+                icon: 'fa-solid fa-id-card',
+                color: 'color-orange',
+                buttonText: 'Check List',
+                modalContent: `
+                    <h2>Available Student ID Cards</h2>
+                    <p>Please check the list on the student portal noticeboard for your name. IDs can be collected from the admissions office, Wing B, between 9am and 4pm on weekdays.</p>
+                    <p><strong>Latest Update:</strong> IDs for registration numbers C026-01-0001/2025 to C026-01-0050/2025 are now available for collection.</p>
+                `
+            },
+            {
+                title: 'Graduation Booklet',
+                description: 'Download the latest graduation booklet.',
+                category: 'academic',
+                icon: 'fa-solid fa-graduation-cap',
+                color: 'color-teal',
+                buttonText: 'Download',
+                modalContent: `
+                    <h2>Graduation Booklet</h2>
+                    <p>Download the booklet for the most recent graduation ceremony to see the list of graduates and the ceremony proceedings.</p>
+                    <a href="#" class="form-group button" style="display: block; text-align: center; text-decoration: none; background-color: #009933; color: white; padding: 15px; border-radius: 8px;">Download 2024 Graduation Booklet (PDF)</a>
+                `
+            },
+            {
+                title: 'Eduroam Student Email',
+                description: 'Get access to the university\'s WiFi and your student email.',
+                category: 'academic',
+                icon: 'fa-solid fa-wifi',
+                color: 'color-green',
+                buttonText: 'Get Access',
+                modalContent: `
+                    <h2>Eduroam & Student Email Setup</h2>
+                    <p>Your student email is your registration number @students.dkut.ac.ke. Use these credentials to access the Eduroam WiFi network across campus.</p>
+                    <p>For detailed setup instructions, please visit the <a href="#">ICT Helpdesk Portal</a> or contact support.</p>
+                `
+            },
+            {
+                title: 'Teaching Timetable',
+                description: 'View the teaching timetable for the current semester.',
+                category: 'academic',
+                icon: 'fa-solid fa-calendar-days',
+                color: 'color-blue',
+                buttonText: 'View Timetable',
+                modalContent: `
+                    <h2>Teaching Timetable</h2>
+                    <p>The teaching timetable for the current semester (Semester 2, 2024/2025) is now available.</p>
+                    <a href="#" class="form-group button" style="display: block; text-align: center; text-decoration: none; background-color: #009933; color: white; padding: 15px; border-radius: 8px;">Go to Timetable Portal</a>
+                `
+            },
+            {
+                title: 'Exam Timetable',
+                description: 'View the examination timetable for the current semester.',
+                category: 'academic',
+                icon: 'fa-solid fa-calendar-days',
+                color: 'color-green',
+                buttonText: 'View Timetable',
+                modalContent: `
+                    <h2>Examination Timetable</h2>
+                    <p>The examination timetable for the current semester (Semester 2, 2024/2025) is released. Please review it carefully for your exam dates and venues.</p>
+                    <a href="#" class="form-group button" style="display: block; text-align: center; text-decoration: none; background-color: #009933; color: white; padding: 15px; border-radius: 8px;">View Exam Timetable</a>
+                `
+            },
+            {
+                title: 'Student Leaveout',
+                description: 'Apply for a leave out from the university.',
+                category: 'administrative',
+                icon: 'fa-solid fa-person-walking-arrow-right',
+                color: 'color-yellow',
+                buttonText: 'Apply for Leave Out',
+                modalContent: `
+                    <h2>Student Leave Out Form</h2>
+                    <form>
+                        <div class="form-group">
+                            <label for="leaveout-date">Date of Departure</label>
+                            <input type="date" id="leaveout-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="return-date">Expected Date of Return</label>
+                            <input type="date" id="return-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="leaveout-reason">Reason for Leaving</label>
+                            <input type="text" id="leaveout-reason" placeholder="e.g., Mid-semester break" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit">Submit Application</button>
+                        </div>
+                    </form>
+                `
+            },
+            {
+                title: 'Student Information Handbook',
+                description: 'Access the comprehensive student information handbook.',
+                category: 'academic',
+                icon: 'fa-solid fa-book-open-reader',
+                color: 'color-red',
+                buttonText: 'Read Handbook',
+                modalContent: `
+                    <h2>Student Information Handbook</h2>
+                    <p>The student handbook contains all the rules, regulations, and information you need for your academic journey at DeKUT. It is highly recommended to read it thoroughly.</p>
+                    <a href="#" class="form-group button" style="display: block; text-align: center; text-decoration: none; background-color: #009933; color: white; padding: 15px; border-radius: 8px;">Download Handbook (PDF)</a>
+                `
+            },
+            {
+                title: 'Student Identity Card Application',
+                description: 'Apply for a new student identity card.',
+                category: 'administrative',
+                icon: 'fa-solid fa-id-card-clip',
+                color: 'color-teal',
+                buttonText: 'Apply for ID',
+                modalContent: `
+                    <h2>New Student ID Application</h2>
+                    <p>Use this form if you have lost your ID or it is damaged. A replacement fee of KES 500 is applicable.</p>
+                    <form>
+                        <div class="form-group">
+                            <label for="id-reason">Reason for Application</label>
+                            <select id="id-reason" required>
+                                <option value="">Select Reason</option>
+                                <option value="lost">Lost ID</option>
+                                <option value="damaged">Damaged ID</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="supporting-document">Supporting Document (e.g., Police Report, Affidavit)</label>
+                            <input type="file" id="supporting-document" accept=".pdf,.jpg,.png">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit">Submit Application</button>
+                        </div>
+                    </form>
+                `
+            }
+        ];
+
+        const resourcesGrid = document.querySelector('.resources-grid');
+        const modal = document.getElementById('resourceModal');
+        const modalBody = document.getElementById('modalBody');
+        const closeBtn = document.querySelector('.close-btn');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        function displayResources() {
+            resourcesGrid.innerHTML = '';
+            resources.forEach(resource => {
+                const card = document.createElement('a');
+                card.href = "#";
+                card.className = `resource-card ${resource.color}`;
+                card.innerHTML = `
+                    <i class="icon ${resource.icon}"></i>
+                    <span class="text">${resource.title}</span>
+                `;
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    modalBody.innerHTML = resource.modalContent;
+                    modal.style.display = 'flex'; // Use flex to center modal
+                });
+                resourcesGrid.appendChild(card);
+            });
+        }
+
+        // Close modal when clicking on close button or outside modal
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Handle active navigation item
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // Initial display of resources
+        displayResources();
+    </script>
+</body>
+</html>
